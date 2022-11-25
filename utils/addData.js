@@ -1,4 +1,4 @@
-const request = require('request')
+const axios = require('axios')
 
 const addData = async ({data}) => {
 
@@ -9,11 +9,10 @@ const addData = async ({data}) => {
     };
 
 
-    const apiResponse = await request('https://testurl/data', options,(req,res)=>{
-        console.log('res',res)
-        return res
+    const apiResponse = await axios.post('https://testurl/add',{
+       data:data
     })
-    const addedData = await apiResponse.json();
+    const addedData = await apiResponse;
 
     return addedData;
 }

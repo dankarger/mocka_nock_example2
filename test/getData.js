@@ -15,7 +15,7 @@ const scope = nock('https://testurl')
             url: 'https://api.github.com/licenses/mit',
             node_id: 'MDc6TGljZW5zZTEz',
         },
-    }).post('/add').reply(200,{
+    }).post('/add',{data:'testData'}).reply(200,{
         message:"data added"
     })
 
@@ -51,9 +51,10 @@ describe('test getData', function() {
 describe('test addData', function() {
     it("except addData to receive correct message", async () => {
 
-        // const message = await addData('helllo');
-        // console.log('data',message)
-        // expect(data).to.have.property('data1').to.equal('hello');
+        const response = await addData({data:'testData'});
+        console.log('data',response.data)
+        const data = response.data
+        expect(data).to.have.property('message').to.equal('data added');
 
     })
 })
