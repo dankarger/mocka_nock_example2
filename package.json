@@ -1,0 +1,19 @@
+{
+  "name": "mocha_nock_example2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.1.0",
+    "nock": "^13.2.9"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
+}
