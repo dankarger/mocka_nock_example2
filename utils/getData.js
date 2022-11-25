@@ -1,4 +1,4 @@
-const request = require('request')
+const axios = require('axios')
 
 const getData = async () => {
 
@@ -8,13 +8,13 @@ const getData = async () => {
     };
 
 
-    const apiResponse = await request('https://testurl/data', options,(req,res)=>{
-        console.log('res',res)
-        return res
-    })
-    const loginResponse = await apiResponse.json();
+    const apiResponse = await axios.get('https://testurl/data' )
 
-    return loginResponse;
+
+
+    const response = await apiResponse;
+    // console.log('1111111',response.status)
+    return response;
 }
 
 module.exports = {getData}

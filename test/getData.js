@@ -3,9 +3,10 @@ const chai = require('chai')
 const expect = chai.expect;
 const nock = require('nock')
 const {getData} = require('../utils/getData')
+const {addData} = require("../utils/addData");
 
 const scope = nock('https://testurl')
-    .get('/data')
+    .get('/data').times(3)
     .reply(200, {
         data: {
             key: 'mit',
@@ -14,14 +15,45 @@ const scope = nock('https://testurl')
             url: 'https://api.github.com/licenses/mit',
             node_id: 'MDc6TGljZW5zZTEz',
         },
+    }).post('/add').reply(200,{
+        message:"data added"
     })
+
+
 describe('test getData', function() {
+    it("except getData to status of 200", async () => {
+
+        const res = await getData()
+        const data = res
+        // console.log('data1212',data)
+        expect(data).to.have.property('status').to.equal(200);
+
+    })
+
     it("except getData to have  data1", async () => {
 
-        const data = await getData();
-        console.log('data',data)
-        // expect(data).to.have.property('data1').to.equal('hello');
+        const res = await getData()
+        // console.log('2',res.data.data)
+        const data = res.data.data
+
+        expect(data).to.have.property('data1').to.equal('hello');
+
+    })
+    it("except getData to have  id of '12hello' ", async () => {
+
+        const res = await getData()
+        const data = res.data.data
+        expect(data).to.have.property('id').to.equal('12hello');
 
     })
 })
 
+describe('test addData', function() {
+    it("except addData to receive correct message", async () => {
+
+        // const message = await addData('helllo');
+        // console.log('data',message)
+        // expect(data).to.have.property('data1').to.equal('hello');
+
+    })
+})
