@@ -1,3 +1,4 @@
+const request = require('request')
 
 const getData = async () => {
 
@@ -7,8 +8,11 @@ const getData = async () => {
     };
 
 
-    const apiResponse = await fetch('https://testurl/data', options)
-    const loginResponse = await apiResponse.text();
+    const apiResponse = await request('https://testurl/data', options,(req,res)=>{
+        console.log('res',res)
+        return res
+    })
+    const loginResponse = await apiResponse.json();
 
     return loginResponse;
 }
