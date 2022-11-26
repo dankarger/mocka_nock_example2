@@ -1,6 +1,13 @@
 const nock = require('nock');
 const request = require('supertest')("http://api.postcodes.io&quot;");
 const expect = require('chai').expect;
+// const fs = require('fs');
+const jsonFile = require('./mockedresponse.json');
+
+//
+// const contents = fs.open('mockedresponse.json','r');
+// //parse the contents and assign to a variable
+// const jsonContent = JSON.parse(contents);
 
 describe("Testing API with a mocked backend", function () {
 
@@ -22,7 +29,8 @@ describe("Testing API with a mocked backend", function () {
             .reply(200, {
                 "status": 200,
                 "message": "This simulates a 10 second delay"
-            });
+            }).get('/postcodes/')
+            .reply(200, jsonFile);
 
         //perform the request to the api which will now be intercepted by nock
         request
@@ -46,14 +54,15 @@ describe("Testing API with a mocked backend", function () {
         // this.timeout(60000);
 
         //setup mocked backend for a specific end point
-        nock("http://api.postcodes.io&quot")
-            .get('/postcodes/')
-            //simulate a 10 second delay
-            .delayBody(10000)
-            .reply(200, {
-                "status": 200,
-                "message": "This simulates a 10 second delay"
-            });
+        // nock("http://api.postcodes.io&quot")
+        //     .get('/postcodes/')
+        //     //simulate a 10 second delay
+        //     .delayBody(10000)
+        //     .reply(200, {
+        //         "status": 200,
+        //         "message": "This simulates a 10 second delay"
+        //     }).get('/postcodes/')
+        //     .reply(200, jsonContent);
 
         //perform the request to the api which will now be intercepted by nock
         request
@@ -61,6 +70,28 @@ describe("Testing API with a mocked backend", function () {
             .end(function (err, res) {
                 expect(res.body.status).to.equal(200);
                 expect(res.body.message).to.equal("This simulates a 10 second delay");
+                done();
+            });
+    })
+});
+
+describe("Testing API with a mocked backend- with json file ", function () {
+
+    it("responds with json file response", function (done) {
+
+        //read the json file
+
+
+        // nock("http://api.postcodes.io&quot")
+        //     .get('/postcodes/')
+        //     .reply(200, jsonContent);
+
+        request
+            .get('/postcodes/')
+            .expect(200)
+            .end(function (err, res) {
+                expect(res.body.status).to.equal(200);
+                expect(res.body.result.postcode).to.equal("SW1A 1AA")
                 done();
             });
     })
